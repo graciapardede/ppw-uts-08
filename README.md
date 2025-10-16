@@ -12,3 +12,7 @@ Eunike Purba
 - Fungsi logout
 - membuat ppt
 
+Lisbeth Panjaitan
+-Halaman daftar kursus (tampilkan semua kursus)
+-Form enrollment (nama, email, kursus dipilih)
+-Membuat agar hanya user login yang bisa enroll

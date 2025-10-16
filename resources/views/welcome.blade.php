@@ -1,4 +1,629 @@
 <!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Course Enrollment - Beranda</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #5b6cff;
+            --primary-dark: #4a5bcc;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            --bg-light: #f8fafc;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--text-dark);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        header {
+            background: white;
+            padding: 24px 32px;
+            border-radius: 16px;
+            margin-bottom: 32px;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        header h1 {
+            color: var(--primary-color);
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(91, 108, 255, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-success {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        /* User Info */
+        .user-info {
+            background: white;
+            padding: 20px 24px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .user-status {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--success-color);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Main Content */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        /* Course Grid */
+        .courses-section {
+            background: white;
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 28px;
+            background: var(--primary-color);
+            border-radius: 4px;
+        }
+
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .course-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .course-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), #764ba2);
+        }
+
+        .course-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+            border-color: var(--primary-color);
+        }
+
+        .course-card h3 {
+            color: var(--text-dark);
+            font-size: 18px;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .course-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .course-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .course-price {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-top: 16px;
+        }
+
+        .course-price.free {
+            color: var(--success-color);
+        }
+
+        /* Enrollment Form */
+        .enrollment-form {
+            background: white;
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            position: sticky;
+            top: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(91, 108, 255, 0.1);
+        }
+
+        .alert {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-top: 16px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .alert.show {
+            display: block;
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #10b981;
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #ef4444;
+        }
+
+        .alert-info {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #3b82f6;
+        }
+
+        /* Login Section */
+        .login-section {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            margin-top: 24px;
+        }
+
+        .login-form {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .login-form input {
+            flex: 1;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .enrollment-form {
+                position: static;
+            }
+
+            .course-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 20px;
+            }
+
+            header h1 {
+                font-size: 24px;
+            }
+
+            .course-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .login-form {
+                flex-direction: column;
+            }
+        }
+
+        /* Icons */
+        .icon {
+            width: 18px;
+            height: 18px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            background: #e0e7ff;
+            color: #3730a3;
+        }
+
+        footer {
+            text-align: center;
+            color: white;
+            padding: 32px 0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div>
+                <h1>🎓 Online Course Enrollment</h1>
+                <p style="color: var(--text-muted); margin-top: 4px;">Platform pembelajaran online terbaik</p>
+            </div>
+            <div class="header-nav">
+                <a href="/" class="btn btn-outline">Daftar Kursus</a>
+                <a href="/my-courses" class="btn btn-primary">Kursus Saya</a>
+            </div>
+        </header>
+
+        <!-- User Status -->
+        <div class="user-info" id="userInfo" style="display: none;">
+            <div class="user-status">
+                <span class="status-indicator"></span>
+                <div>
+                    <strong>Selamat datang!</strong>
+                    <p style="color: var(--text-muted); margin-top: 4px; font-size: 14px;" id="userEmail"></p>
+                </div>
+            </div>
+            <button class="btn btn-outline" onclick="logout()">Logout</button>
+        </div>
+
+        <!-- Login Section (shown when not logged in) -->
+        <div class="login-section" id="loginSection">
+            <h3 style="margin-bottom: 8px;">🔐 Login Sederhana</h3>
+            <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 16px;">
+                Masukkan email untuk melihat kursus yang telah Anda ambil
+            </p>
+            <div class="login-form">
+                <input type="email" id="loginEmail" placeholder="Masukkan email Anda" />
+                <button class="btn btn-primary" onclick="login()">Login</button>
+            </div>
+            <div id="loginMessage" class="alert"></div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Courses List -->
+            <div class="courses-section">
+                <div class="section-title">📚 Daftar Kursus Tersedia</div>
+                <div class="course-grid" id="courseGrid"></div>
+            </div>
+
+            <!-- Enrollment Form -->
+            <div>
+                <div class="enrollment-form">
+                    <h3 style="margin-bottom: 8px; color: var(--primary-color);">✍️ Form Pendaftaran</h3>
+                    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 24px;">
+                        Isi form untuk mendaftar kursus
+                    </p>
+
+                    <form id="enrollmentForm" onsubmit="handleEnrollment(event)">
+                        <div class="form-group">
+                            <label for="studentName">Nama Lengkap *</label>
+                            <input type="text" id="studentName" placeholder="Masukkan nama lengkap" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="studentEmail">Email *</label>
+                            <input type="email" id="studentEmail" placeholder="contoh@email.com" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="courseSelect">Pilih Kursus *</label>
+                            <select id="courseSelect" required>
+                                <option value="">-- Pilih Kursus --</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-success" style="width: 100%;">
+                            Daftar Sekarang
+                        </button>
+                    </form>
+
+                    <div id="enrollMessage" class="alert"></div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            &copy; {{ date('Y') }} - Online Course Enrollment • Data disimpan di browser (localStorage)
+        </footer>
+    </div>
+
+    <script>
+        // Data Kursus
+        const COURSES = [
+            {
+                id: 'html-css',
+                name: 'HTML & CSS Dasar',
+                duration: '4 minggu',
+                price: 0,
+                description: 'Pelajari fundamental HTML dan CSS untuk membuat website yang responsif dan modern.'
+            },
+            {
+                id: 'javascript',
+                name: 'JavaScript untuk Pemula',
+                duration: '6 minggu',
+                price: 150000,
+                description: 'Kuasai dasar-dasar JavaScript, manipulasi DOM, dan interaksi dengan API.'
+            },
+            {
+                id: 'react',
+                name: 'React JS Fundamental',
+                duration: '8 minggu',
+                price: 350000,
+                description: 'Membangun aplikasi web modern dengan React, dari component hingga hooks.'
+            },
+            {
+                id: 'laravel',
+                name: 'Backend PHP Laravel',
+                duration: '10 minggu',
+                price: 500000,
+                description: 'Belajar membuat aplikasi web backend dengan Laravel framework.'
+            },
+            {
+                id: 'nodejs',
+                name: 'Node.js & Express',
+                duration: '7 minggu',
+                price: 400000,
+                description: 'Membuat REST API dan server-side application dengan Node.js dan Express.'
+            },
+            {
+                id: 'python',
+                name: 'Python Programming',
+                duration: '8 minggu',
+                price: 300000,
+                description: 'Belajar Python dari dasar hingga membuat aplikasi sederhana.'
+            }
+        ];
+
+        function readParticipants(){
+            try{ return JSON.parse(localStorage.getItem('participants')||'[]') }catch(e){return []}
+        }
+        function writeParticipants(list){ localStorage.setItem('participants', JSON.stringify(list)) }
+
+        // Render course cards
+        function renderCourses(){
+            const grid = document.getElementById('coursesGrid'); grid.innerHTML='';
+            COURSES.forEach(c=>{
+                const el = document.createElement('div'); el.className='card';
+                el.innerHTML = `<h3>${escapeHtml(c.name)}</h3>
+                    <div class="meta">${escapeHtml(c.desc)}</div>
+                    <div class="meta">Durasi: ${escapeHtml(c.duration)}</div>
+                    <div class="price">${formatPrice(c.price)}</div>`;
+                grid.appendChild(el);
+            })
+        }
+
+        function populateSelect(){
+            const sel = document.getElementById('courseSelect'); sel.innerHTML='';
+            COURSES.forEach(c=>{
+                const o = document.createElement('option'); o.value=c.id; o.textContent = `${c.name} — ${formatPrice(c.price)}`; sel.appendChild(o);
+            })
+        }
+
+        function formatPrice(p){ return p===0? 'Gratis' : new Intl.NumberFormat('id-ID', {style:'currency',currency:'IDR'}).format(p) }
+
+        // simple html escaping
+        function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') }
+
+        // Enrollment handler
+        document.getElementById('enrollBtn').addEventListener('click', ()=>{
+            const name = document.getElementById('studentName').value.trim();
+            const email = document.getElementById('studentEmail').value.trim().toLowerCase();
+            const courseId = document.getElementById('courseSelect').value;
+            const msg = document.getElementById('enrollMsg'); msg.innerText='';
+            if(!name||!email){ msg.innerText='Nama dan email wajib diisi.'; return }
+            if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ msg.innerText='Format email tidak valid.'; return }
+
+            const participants = readParticipants();
+            const exists = participants.find(p=>p.email===email && p.courseId===courseId);
+            if(exists){ msg.innerText='Anda sudah terdaftar di kursus ini.'; return }
+
+            participants.push({name, email, courseId, createdAt:(new Date()).toISOString()});
+            writeParticipants(participants);
+            msg.innerText='Pendaftaran sukses!';
+            document.getElementById('studentName').value='';
+            // keep email for convenience
+            renderMyCourses();
+            renderLoginState();
+        })
+
+        // Login handler
+        document.getElementById('loginBtn').addEventListener('click', ()=>{
+            const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+            const msg = document.getElementById('loginMsg'); msg.innerText='';
+            if(!email){ msg.innerText='Masukkan email untuk login.'; return }
+            localStorage.setItem('currentUser', email);
+            renderLoginState();
+            renderMyCourses();
+        })
+
+        document.getElementById('logoutBtn').addEventListener('click', ()=>{
+            localStorage.removeItem('currentUser');
+            document.getElementById('loginMsg').innerText='Telah logout.';
+            renderLoginState();
+            renderMyCourses();
+        })
+
+        function getCurrentUser(){ return localStorage.getItem('currentUser') }
+
+        function renderLoginState(){
+            const cur = getCurrentUser();
+            const loginMsg = document.getElementById('loginMsg');
+            if(cur){ loginMsg.innerHTML = `Login sebagai <strong>${escapeHtml(cur)}</strong>`; document.getElementById('loginEmail').value = cur }
+            else { loginMsg.innerHTML = 'Belum login.'; document.getElementById('loginEmail').value = '' }
+        }
+
+        // Render participant(s) — if logged in show only their courses, otherwise show all
+        function renderMyCourses(){
+            const container = document.getElementById('myCourses'); container.innerHTML='';
+            const participants = readParticipants();
+            const cur = getCurrentUser();
+            const list = cur? participants.filter(p=>p.email===cur) : participants;
+
+            if(list.length===0){ container.innerHTML = '<div class="muted">Belum ada pendaftaran.</div>'; return }
+
+            const ul = document.createElement('div'); ul.style.display='grid'; ul.style.gap='8px';
+            list.forEach(p=>{
+                const course = COURSES.find(c=>c.id===p.courseId);
+                const item = document.createElement('div'); item.className='card';
+                item.innerHTML = `<div><strong>${escapeHtml(p.name)}</strong> <span class="muted">(${escapeHtml(p.email)})</span></div>
+                    <div class="meta">Kursus: ${escapeHtml(course?course.name:p.courseId)}</div>
+                    <div class="meta">Waktu: ${new Date(p.createdAt).toLocaleString()}</div>`;
+                ul.appendChild(item);
+            })
+            container.appendChild(ul);
+        }
+
+        // init
+        populateSelect(); renderCourses(); renderLoginState(); renderMyCourses();
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pendaftaran Kursus Online</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <h2>Sistem Kursus Online</h2>
+            <div class="nav-links" id="navLinks">
+                <a href="index.html" class="active">Beranda</a>
+                <a href="login.html" id="navLogin">Login</a>
+                <a href="register.html" id="navRegister">Daftar</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Alert jika belum login -->
+        <div id="authAlert" class="alert alert-info" style="display: none;">
+            <p>⚠️ Silakan <a href="login.html" style="color: #28a745; font-weight: bold;">login</a> atau <a href="register.html" style="color: #28a745; font-weight: bold;">daftar akun</a> terlebih dahulu untuk mendaftar kursus.</p>
+        </div>
+
+        <!-- Welcome message untuk user yang login -->
+        <div id="welcomeMessage" class="welcome-box" style="display: none;">
+            <p>👋 Selamat datang, <strong id="welcomeUserName"></strong>! Silakan pilih kursus yang ingin Anda ikuti.</p>
+        </div>
+
+        <section class="courses-section">
+            <h2>Daftar Kursus Tersedia</h2>
+            <div id="coursesList" class="courses-grid"></div>
+        </section>
+
+        <section class="enrollment-section" id="enrollmentSection">
+            <h2>Daftar Sebagai Peserta</h2>
+            <p style="color: #666; margin-bottom: 15px;">Isi form di bawah untuk mendaftar sebagai peserta kursus</p>
+            <form id="enrollmentForm">
+                <div class="form-group">
+                    <label for="studentName">Nama Lengkap Peserta</label>
+                    <input type="text" id="studentName" required placeholder="Masukkan nama Anda" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="studentEmail">Email Peserta</label>
+                    <input type="email" id="studentEmail" required placeholder="email@example.com" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="courseSelect">Pilih Kursus yang Ingin Diikuti</label>
+                    <select id="courseSelect" required>
+                        <option value="">-- Pilih Kursus yang Tersedia --</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Daftar Sebagai Peserta</button>
+                <div id="enrollmentMessage" class="message"></div>
+            </form>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Check authentication and initialize page
+        window.addEventListener('DOMContentLoaded', function() {
+            const currentUser = getCurrentUser();
+            
+            if (currentUser) {
+                // User logged in - show enrollment form
+                document.getElementById('authAlert').style.display = 'none';
+                document.getElementById('welcomeMessage').style.display = 'block';
+                document.getElementById('welcomeUserName').textContent = currentUser.name;
+                document.getElementById('enrollmentSection').style.display = 'block';
+                
+                // Pre-fill form with user data
+                document.getElementById('studentName').value = currentUser.name;
+                document.getElementById('studentEmail').value = currentUser.email;
+            } else {
+                // User not logged in - hide enrollment form, show alert
+                document.getElementById('authAlert').style.display = 'block';
+                document.getElementById('welcomeMessage').style.display = 'none';
+                document.getElementById('enrollmentSection').style.display = 'none';
+            }
+
+            updateNavbar();
+            renderCourses();
+        });
+    </script>
+</body>
+</html>

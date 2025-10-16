@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Akun - Sistem Kursus Online</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <h2>Sistem Kursus Online</h2>
+            <div class="nav-links" id="navLinks">
+                <a href="index.html">Beranda</a>
+                <a href="login.html">Login</a>
+                <a href="register.html">Daftar</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="auth-container">
+            <h2>Buat Akun Baru</h2>
+            <p class="subtitle">Daftar untuk mulai mengikuti kursus</p>
+            
+            <form id="registerForm" class="auth-form">
+                <div class="form-group">
+                    <label for="regName">Nama Lengkap</label>
+                    <input type="text" id="regName" name="name" placeholder="Masukkan nama lengkap" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="regEmail">Email</label>
+                    <input type="email" id="regEmail" name="email" placeholder="contoh@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="regPassword">Password</label>
+                    <input type="password" id="regPassword" name="password" placeholder="Minimal 6 karakter" required minlength="6">
+                </div>
+
+                <div class="form-group">
+                    <label for="regPasswordConfirm">Konfirmasi Password</label>
+                    <input type="password" id="regPasswordConfirm" name="passwordConfirm" placeholder="Ulangi password" required minlength="6">
+                </div>
+
+                <div id="registerMessage" class="message"></div>
+
+                <button type="submit" class="btn btn-primary">Daftar Akun</button>
+            </form>
+
+            <p class="text-center" style="margin-top: 20px;">
+                Sudah punya akun? <a href="login.html" style="color: #28a745; text-decoration: none;">Login di sini</a>
+            </p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Check if already logged in
+        if (getCurrentUser()) {
+            window.location.href = 'index.html';
+        }
+
+        // Handle registration
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('regName').value.trim();
+            const email = document.getElementById('regEmail').value.trim().toLowerCase();
+            const password = document.getElementById('regPassword').value;
+            const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+            const messageDiv = document.getElementById('registerMessage');
+
+            // Validation
+            if (!name || !email || !password) {
+                showMessage(messageDiv, 'Semua field harus diisi!', 'error');
+                return;
+            }
+
+            if (password !== passwordConfirm) {
+                showMessage(messageDiv, 'Password tidak cocok!', 'error');
+                return;
+            }
+
+            if (password.length < 6) {
+                showMessage(messageDiv, 'Password minimal 6 karakter!', 'error');
+                return;
+            }
+
+            // Register user
+            const result = registerUser(name, email, password);
+            
+            if (result.success) {
+                showMessage(messageDiv, 'Registrasi berhasil! Mengarahkan ke login...', 'success');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 1500);
+            } else {
+                showMessage(messageDiv, result.message, 'error');
+            }
+        });
+
+        function showMessage(element, message, type) {
+            element.textContent = message;
+            element.className = 'message ' + (type === 'success' ? 'success-message' : 'error-message');
+            element.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
